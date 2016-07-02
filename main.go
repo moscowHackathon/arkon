@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/astaxie/beego"
-	_ "github.com/moskowHackathon/arkon/routers"
-	"github.com/moskowHackathon/arkon/model"
+	_ "github.com/moscowHackathon/arkon/routers"
+	"github.com/moscowHackathon/arkon/models"
 )
 
 func main() {
-	beego.AddAPPStartHook(model.InitCore)
+	beego.AddAPPStartHook(models.InitCore)
 	beego.Run()
 }

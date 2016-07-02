@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/moskowHackathon/arkon/controllers"
+	"github.com/moscowHackathon/arkon/controllers"
 )
 
 func init() {

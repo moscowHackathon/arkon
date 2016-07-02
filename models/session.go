@@ -7,10 +7,12 @@ import (
 
 type Session struct {
 	ID string
+	calc SessionCalc
 }
 
 func (s Session) GetQuestion() string {
-	return "Question 1"
+	i := s.calc.GetNextToCheck()
+	return features[i]
 }
 
 func (s Session) Answer(a int) bool {
@@ -23,7 +25,7 @@ var sessions = make(SessionMap)
 var sessionMutex sync.RWMutex
 
 func NewSession(id string) Session {
-	s := Session{ID: id}
+	s := Session{ID: id, calc: newSessionCalc(cases)}
 
 	sessionMutex.Lock()
 	sessions[id] = s

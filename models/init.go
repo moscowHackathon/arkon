@@ -4,9 +4,9 @@ import (
 	"encoding/csv"
 	"io"
 	"log"
-	"strings"
 	"github.com/astaxie/beego"
 	"fmt"
+	"os"
 )
 
 var teams []string
@@ -16,13 +16,19 @@ var cases []Case
 func InitCore() error {
 	csv := beego.AppConfig.String("datafilename")
 	fmt.Println("LOADING ", csv)
-	// initData(csv)
+	initData(csv)
+
+	fmt.Println(teams)
+	fmt.Println(cases)
+	fmt.Println(features)
+
 	return nil
 }
 
-func initData(data string) {
+func initData(path string) {
+	f, _ := os.Open(path)
 
-	r := csv.NewReader(strings.NewReader(data))
+	r := csv.NewReader(f)
 
 	isFirst := true
 	for {

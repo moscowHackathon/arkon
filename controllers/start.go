@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/moskowHackathon/arkon/models"
+	"github.com/moscowHackathon/arkon/models"
 )
 
 type StartResponse struct {
