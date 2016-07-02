@@ -2,12 +2,13 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/moskowHackathon/arkon/models"
 )
 
 type StartResponse struct {
-	ID string `json:"id"`
+	ID      string `json:"id"`
 	Message string `json:"message"`
-	Error string `json:"error"`
+	Error   string `json:"error"`
 }
 
 type StartController struct {
@@ -16,6 +17,8 @@ type StartController struct {
 
 func (c *StartController) Get() {
 	id := c.Ctx.Input.Param(":id")
+
+	models.NewSession(id)
 
 	c.Data["json"] = StartResponse{ID: id, Message: "ok"}
 	c.ServeJSON()
