@@ -4,17 +4,17 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type StartResponse struct {
+type AnswerResponse struct {
 	ID int
 }
 
-type StartController struct {
+type AnswerController struct {
 	beego.Controller
 }
 
-func (c *StartController) Get() {
+func (c *AnswerController) Get() {
 	id := c.Ctx.Input.Param(":id")
 
-	c.Data["json"] = StartResponse{id}
+	c.Data["json"] = AnswerResponse{id}
 	c.ServeJSON()
 }
