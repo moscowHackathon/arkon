@@ -5,11 +5,20 @@ import (
 	"io"
 	"log"
 	"strings"
+	"github.com/astaxie/beego"
+	"fmt"
 )
 
 var teams []string
 var features []string
 var cases []Case
+
+func InitCore() error {
+	csv := beego.AppConfig.String("datafilename")
+	fmt.Println("LOADING ", csv)
+	// initData(csv)
+	return nil
+}
 
 func initData(data string) {
 
