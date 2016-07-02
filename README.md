@@ -7,7 +7,7 @@ This is api-service of expert system
     go get github.com/astaxie/beego
     go get github.com/beego/bee
 
-    go get github.com/moskowhackathon/arkon
+    go get github.com/moskowHackathon/arkon
     cd $GOPATH/src/github.com/moskowhackathon/arkon && $GOPATH/bin/bee run
 
 ## Check after running
