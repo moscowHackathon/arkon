@@ -8,4 +8,4 @@ This is api-service of expert system
     go get github.com/beego/bee
 
     go get github.com/moskowhackaton/arkon
-    cd $GOPATH/src/github.com/moskowhackaton && $GOPATH/bin/bee run
+    cd $GOPATH/src/github.com/moskowhackaton/arkon && $GOPATH/bin/bee run
