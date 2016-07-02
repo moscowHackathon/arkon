@@ -5,7 +5,9 @@ import (
 )
 
 type CompleteResponse struct {
-	ID string
+	ID string `json:"id"`
+	Message string `json:"message"`
+	Error string `json:"error"`
 }
 
 type CompleteController struct {
@@ -15,6 +17,6 @@ type CompleteController struct {
 func (c *CompleteController) Get() {
 	id := c.Ctx.Input.Param(":id")
 
-	c.Data["json"] = CompleteResponse{id}
+	c.Data["json"] = CompleteResponse{ID: id, Message: "ok"}
 	c.ServeJSON()
 }

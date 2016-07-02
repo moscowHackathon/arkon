@@ -5,7 +5,9 @@ import (
 )
 
 type AnswerResponse struct {
-	ID string
+	ID string `json:"id"`
+	Message string `json:"message"`
+	Error string `json:"error"`
 }
 
 type AnswerController struct {
@@ -15,6 +17,6 @@ type AnswerController struct {
 func (c *AnswerController) Get() {
 	id := c.Ctx.Input.Param(":id")
 
-	c.Data["json"] = AnswerResponse{id}
+	c.Data["json"] = AnswerResponse{ID: id, Message: "question"}
 	c.ServeJSON()
 }

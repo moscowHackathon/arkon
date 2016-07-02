@@ -5,7 +5,9 @@ import (
 )
 
 type StartResponse struct {
-	ID string
+	ID string `json:"id"`
+	Message string `json:"message"`
+	Error string `json:"error"`
 }
 
 type StartController struct {
@@ -15,6 +17,6 @@ type StartController struct {
 func (c *StartController) Get() {
 	id := c.Ctx.Input.Param(":id")
 
-	c.Data["json"] = StartResponse{id}
+	c.Data["json"] = StartResponse{ID: id, Message: "ok"}
 	c.ServeJSON()
 }
