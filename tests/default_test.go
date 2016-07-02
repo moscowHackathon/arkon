@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"testing"
 
-	_ "github.com/moskowhackaton/arkon/routers"
+	_ "github.com/moskowhackathon/arkon/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"
