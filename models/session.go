@@ -3,7 +3,6 @@ package models
 import (
 	"errors"
 	"sync"
-	"fmt"
 )
 
 type Session struct {
@@ -12,14 +11,13 @@ type Session struct {
 }
 
 func (s Session) GetQuestion() string {
-	i := s.calc.GetNextToCheck()
-	return features[i]
+	if ok,i := s.calc.GetNextToCheck(); ok {
+		return features[i]
+	}
+	return "Error: no questions"
 }
 
 func (s Session) Answer(a int) (bool, string) {
-	fmt.Println(a)
-
-	fmt.Println(s.calc.cases)
 
 	s.calc.ApplyAnswer(getValue(a))
 	res,i := s.calc.CheckStatus()
@@ -28,10 +26,6 @@ func (s Session) Answer(a int) (bool, string) {
 		return true, teams[i]
 	}
 
-	fmt.Println(res)
-	fmt.Println(i)
-	fmt.Println("cases after answer")
-	fmt.Println(s.calc.cases)
 	return false, ""
 }
 
