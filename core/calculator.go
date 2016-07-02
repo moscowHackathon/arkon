@@ -12,20 +12,10 @@ const (
 	NA
 )
 
-
 /*c := bayesian.NewClassifier("Team1", "Team2")
 	c.Learn([]string{"catalog", "price", "images"}, "Team1")
 	c.Learn([]string{"cart", "checkout", "shipping"}, "Team2")*/
 
-var cases = []Case{Case{
-		team:1,
-		features: []int{1,1,0,-1,1,1,-1},
-	},
-	Case{
-		team:2,
-		features: []int{1,1,0,-1,1,1,-1},
-	},
-}
 type Case struct {
 	team int
 	features []int

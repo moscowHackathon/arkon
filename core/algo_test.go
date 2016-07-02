@@ -55,6 +55,20 @@ func TestA(t *testing.T) {
 	fmt.Println(calc)
 }
 
+func TestInit(t *testing.T) {
+	data := `,is cart page,is checkout,is catalog,is home page down
+bob_api,,Y,N,
+catalog,N,N,Y,Y
+content,,,,Y`
+	initData(data)
+	fmt.Println(teams)
+	fmt.Println(features)
+	fmt.Println(len(features))
+
+	fmt.Println(cases)
+
+}
+
 func Assert(t *testing.T, condition bool, args ...interface{}) {
 	if !condition {
 		t.Error(args)
