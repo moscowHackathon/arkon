@@ -5,7 +5,7 @@ import (
 )
 
 type CompleteResponse struct {
-	ID int
+	ID string
 }
 
 type CompleteController struct {

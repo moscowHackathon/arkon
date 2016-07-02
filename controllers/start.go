@@ -5,7 +5,7 @@ import (
 )
 
 type StartResponse struct {
-	ID int
+	ID string
 }
 
 type StartController struct {

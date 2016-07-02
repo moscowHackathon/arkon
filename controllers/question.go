@@ -5,7 +5,7 @@ import (
 )
 
 type QuestionResponse struct {
-	ID int
+	ID string
 }
 
 type QuestionController struct {
