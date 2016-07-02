@@ -3,11 +3,12 @@ package models
 import (
 	"errors"
 	"sync"
+	"fmt"
 )
 
 type Session struct {
 	ID string
-	calc SessionCalc
+	calc *SessionCalc
 }
 
 func (s Session) GetQuestion() string {
@@ -15,8 +16,34 @@ func (s Session) GetQuestion() string {
 	return features[i]
 }
 
-func (s Session) Answer(a int) bool {
-	return false
+func (s Session) Answer(a int) (bool, string) {
+	fmt.Println(a)
+
+	fmt.Println(s.calc.cases)
+
+	s.calc.ApplyAnswer(getValue(a))
+	res,i := s.calc.CheckStatus()
+
+	if res {
+		return true, teams[i]
+	}
+
+	fmt.Println(res)
+	fmt.Println(i)
+	fmt.Println("cases after answer")
+	fmt.Println(s.calc.cases)
+	return false, ""
+}
+
+func getValue(a int)int {
+	switch a{
+	case 1:
+		return YES
+	case -1:
+		return NO
+	default:
+		return NA
+	}
 }
 
 type SessionMap map[string]Session

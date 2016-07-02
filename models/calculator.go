@@ -3,6 +3,7 @@ package models
 import(
 	"math"
 	"fmt"
+	//"github.com/astaxie/beego/logs"
 )
 
 const (
@@ -27,17 +28,22 @@ type SessionCalc struct {
 	answers []int
 }
 
-func newSessionCalc(cases []Case) SessionCalc {
+func newSessionCalc(cases []Case) *SessionCalc {
 	lf := len(cases[0].features)
 	f := make([]int, lf)
-	return  SessionCalc{
+	return  &SessionCalc{
 		cases:cases,
 		answers: f,
 	}
 }
 
+//todo
+//если нашел
+// если тупик
 func (s *SessionCalc) GetNextToCheck() int{
 	lf := len(s.cases[0].features)
+	fmt.Println("cases next")
+	fmt.Println(s.cases)
 	variant := make([]int, lf)
 	variantTrue := make([]int, lf)
 	variantFalse := make([]int, lf)
@@ -53,14 +59,14 @@ func (s *SessionCalc) GetNextToCheck() int{
 	}
 	l:=int(len(s.cases)/2)
 	for i,_:=range variantTrue {
-		variant[i] = abs(l-variantTrue[i])+abs(l-variantTrue[i])
+		variant[i] = abs(l-variantTrue[i])+abs(l-variantFalse[i])
 	}
 
 	fmt.Println(variantTrue)
 	fmt.Println(variantFalse)
 	fmt.Println(variant)
 
-	res := getMinIndex(variant)
+	res := getMinIndex(variant, s.answers)
 	s.next = res
 
 	return res
@@ -97,11 +103,14 @@ func (s *SessionCalc) isOneTeam() bool{
 	return true
 }
 
-func getMinIndex(arr []int)int{
+func getMinIndex(arr []int, used []int)int{
 	min := arr[0]
 	ret:=0
 
 	for i, value := range arr {
+		if used[i]>0 {
+			continue
+		}
 		if value < min {
 			min = value
 			ret = i
