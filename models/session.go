@@ -13,6 +13,10 @@ func (s Session) GetQuestion() string {
 	return "Question 1"
 }
 
+func (s Session) Answer(a int) bool {
+	return false
+}
+
 type SessionMap map[string]Session
 
 var sessions = make(SessionMap)

@@ -35,4 +35,5 @@ func (c *QuestionController) Get() {
 		Message: q,
 	}
 	c.ServeJSON()
+	return
 }

@@ -22,4 +22,5 @@ func (c *StartController) Get() {
 
 	c.Data["json"] = StartResponse{ID: id, Message: "ok"}
 	c.ServeJSON()
+	return
 }
