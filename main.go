@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/astaxie/beego"
-	_ "github.com/moskowhackathon/arkon/routers"
+	_ "github.com/moskowHackathon/arkon/routers"
 )
 
 func main() {
