@@ -1,4 +1,4 @@
-package core
+package model
 
 import (
 	"testing"
@@ -13,7 +13,7 @@ func TestA(t *testing.T) {
 			features: []int{YES,YES,NA,NO,YES,YES,NO},
 		},
 		Case{
-			team:YES,
+			team:1,
 			features: []int{YES,YES,NA,NO,YES,YES,YES},
 		},
 		Case{
