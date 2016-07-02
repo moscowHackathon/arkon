@@ -29,7 +29,10 @@ func NewSession(id string) Session {
 }
 
 func GetSession(id string) (Session, error) {
+
+	sessionMutex.RLock()
 	s, b := sessions[id]
+	sessionMutex.RUnlock()
 
 	if b == false {
 		return s, errors.New("Session with id '" + id + "' not found")
