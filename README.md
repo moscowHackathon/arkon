@@ -9,3 +9,8 @@ This is api-service of expert system
 
     go get github.com/moskowhackaton/arkon
     cd $GOPATH/src/github.com/moskowhackaton && $GOPATH/bin/bee run
+
+## Check after running
+
+please look to http://localhost:8080/start
+you should see correct JSON-answer
