@@ -7,16 +7,37 @@ import (
 
 type Session struct {
 	ID string
-	calc SessionCalc
+	calc *SessionCalc
 }
 
 func (s Session) GetQuestion() string {
-	i := s.calc.GetNextToCheck()
-	return features[i]
+	if ok,i := s.calc.GetNextToCheck(); ok {
+		return features[i]
+	}
+	return "Error: no questions"
 }
 
-func (s Session) Answer(a int) bool {
-	return false
+func (s Session) Answer(a int) (bool, string) {
+
+	s.calc.ApplyAnswer(getValue(a))
+	res,i := s.calc.CheckStatus()
+
+	if res {
+		return true, teams[i]
+	}
+
+	return false, ""
+}
+
+func getValue(a int)int {
+	switch a{
+	case 1:
+		return YES
+	case -1:
+		return NO
+	default:
+		return NA
+	}
 }
 
 type SessionMap map[string]Session

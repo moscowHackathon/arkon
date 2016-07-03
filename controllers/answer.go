@@ -32,9 +32,9 @@ func (c *AnswerController) Post() {
 		return
 	}
 
-	r := s.Answer(a)
+	r,str := s.Answer(a)
 	if r == true {
-		c.Data["json"] = AnswerResponse{ID: id, Message: "complete"}
+		c.Data["json"] = AnswerResponse{ID: id, Message: "complete "+str}
 		c.ServeJSON()
 		return
 

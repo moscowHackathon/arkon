@@ -3,6 +3,8 @@ package models
 import(
 	"math"
 	"fmt"
+	//"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego"
 )
 
 const (
@@ -25,19 +27,36 @@ type SessionCalc struct {
 	next int
 	cases []Case
 	answers []int
+	isCompleted bool
 }
 
-func newSessionCalc(cases []Case) SessionCalc {
+func newSessionCalc(cases []Case) *SessionCalc {
 	lf := len(cases[0].features)
 	f := make([]int, lf)
-	return  SessionCalc{
+	return  &SessionCalc{
 		cases:cases,
 		answers: f,
 	}
 }
 
-func (s *SessionCalc) GetNextToCheck() int{
+//todo
+// если тупик
+func (s *SessionCalc) GetNextToCheck() (bool, int){
+	beego.Error("START get next")
+	beego.Error("cases: ", s.cases)
+	beego.Error("answers: ", s.answers)
+
+	if (!s.isLastAnswered()) {
+		return true, s.next
+	}
+	if s.isCompleted {
+		return false, 0
+	}
+
 	lf := len(s.cases[0].features)
+
+	beego.Error("cases next", s.cases)
+
 	variant := make([]int, lf)
 	variantTrue := make([]int, lf)
 	variantFalse := make([]int, lf)
@@ -53,20 +72,25 @@ func (s *SessionCalc) GetNextToCheck() int{
 	}
 	l:=int(len(s.cases)/2)
 	for i,_:=range variantTrue {
-		variant[i] = abs(l-variantTrue[i])+abs(l-variantTrue[i])
+		variant[i] = abs(l-variantTrue[i])+abs(l-variantFalse[i])
 	}
 
 	fmt.Println(variantTrue)
 	fmt.Println(variantFalse)
 	fmt.Println(variant)
 
-	res := getMinIndex(variant)
+	res := getMinIndex(variant, s.answers)
+	if res<0 {
+		return false, 0
+	}
+	beego.Error("found: ", res)
 	s.next = res
 
-	return res
+	return true, res
 }
 
 func (s *SessionCalc) ApplyAnswer(ans int) {
+	beego.Error("apply: ", ans)
 	s.answers[s.next] = ans
 	if ans==NA  {
 		return
@@ -78,10 +102,12 @@ func (s *SessionCalc) ApplyAnswer(ans int) {
 		}
 	}
 	s.cases = newCases
+	beego.Error("new cases: ", s.cases)
 }
 
 func (s *SessionCalc) CheckStatus() (isFinish bool, result int){
 	if s.isOneTeam() {
+		s.isCompleted = true
 		return true, s.cases[0].team
 	}
 	return false, 0
@@ -97,12 +123,19 @@ func (s *SessionCalc) isOneTeam() bool{
 	return true
 }
 
-func getMinIndex(arr []int)int{
-	min := arr[0]
-	ret:=0
+func (s *SessionCalc) isLastAnswered() bool{
+	return s.answers[s.next]>0
+}
+
+func getMinIndex(arr []int, used []int)int{
+	min := 0
+	ret:= -1
 
 	for i, value := range arr {
-		if value < min {
+		if used[i]>0 {
+			continue
+		}
+		if ret<0 || value < min {
 			min = value
 			ret = i
 		}
