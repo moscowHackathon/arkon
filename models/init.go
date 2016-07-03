@@ -4,9 +4,9 @@ import (
 	"encoding/csv"
 	"io"
 	"log"
-	"github.com/astaxie/beego"
-	"fmt"
 	"os"
+
+	"github.com/astaxie/beego"
 )
 
 var teams []string
@@ -15,18 +15,24 @@ var cases []Case
 
 func InitCore() error {
 	csv := beego.AppConfig.String("datafilename")
-	fmt.Println("LOADING ", csv)
-	initData(csv)
+	beego.Info("Loading data from file: ", csv)
+	err := initData(csv)
+	if err != nil {
+		return err
+	}
 
-	fmt.Println(teams)
-	fmt.Println(cases)
-	fmt.Println(features)
+	beego.Debug(teams)
+	beego.Debug(cases)
+	beego.Debug(features)
 
 	return nil
 }
 
-func initData(path string) {
-	f, _ := os.Open(path)
+func initData(path string) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return err
+	}
 
 	r := csv.NewReader(f)
 
@@ -40,9 +46,9 @@ func initData(path string) {
 			log.Fatal(err)
 		}
 
-		if (isFirst) {
+		if isFirst {
 			for i, value := range record {
-				if i==0 {
+				if i == 0 {
 					continue
 				}
 				features = append(features, value)
@@ -51,16 +57,15 @@ func initData(path string) {
 			continue
 		}
 
-
 		isFound, index := findTeam(record[0])
 		if !isFound {
 			teams = append(teams, record[0])
-			index = len(teams)-1
+			index = len(teams) - 1
 		}
-		icase := Case{team:index}
+		icase := Case{team: index}
 
 		for i, value := range record {
-			if i==0 {
+			if i == 0 {
 				continue
 			}
 			icase.features = append(icase.features, mapValue(value))
@@ -68,10 +73,12 @@ func initData(path string) {
 
 		cases = append(cases, icase)
 	}
+
+	return nil
 }
 
-func mapValue(value string) int{
-	switch value{
+func mapValue(value string) int {
+	switch value {
 	case "Y":
 		return YES
 	case "N":
@@ -81,9 +88,9 @@ func mapValue(value string) int{
 	}
 }
 
-func findTeam(name string) (bool, int){
-	for i,v := range teams {
-		if (v==name) {
+func findTeam(name string) (bool, int) {
+	for i, v := range teams {
+		if v == name {
 			return true, i
 		}
 	}
