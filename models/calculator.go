@@ -3,8 +3,10 @@ package models
 import(
 	"math"
 	"fmt"
+	"math/rand"
 	//"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego"
+	"time"
 )
 
 const (
@@ -19,6 +21,7 @@ const (
 	c.Learn([]string{"cart", "checkout", "shipping"}, "Team2")*/
 
 type Case struct {
+	label string
 	team int
 	features []int
 }
@@ -130,6 +133,7 @@ func (s *SessionCalc) isLastAnswered() bool{
 func getMinIndex(arr []int, used []int)int{
 	min := 0
 	ret:= -1
+	var arMins []int
 
 	for i, value := range arr {
 		if used[i]>0 {
@@ -138,9 +142,15 @@ func getMinIndex(arr []int, used []int)int{
 		if ret<0 || value < min {
 			min = value
 			ret = i
+			arMins = append(arMins, ret)
 		}
 	}
-	return ret
+	if len(arMins)<=1 {
+		return ret
+	}
+	rand.Seed(time.Now().Unix())
+	n := rand.Int() % len(arMins)
+	return arMins[n]
 }
 
 func abs(a int) int {

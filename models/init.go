@@ -48,7 +48,7 @@ func initData(path string) error {
 
 		if isFirst {
 			for i, value := range record {
-				if i == 0 {
+				if i <= 1 {
 					continue
 				}
 				features = append(features, value)
@@ -62,10 +62,10 @@ func initData(path string) error {
 			teams = append(teams, record[0])
 			index = len(teams) - 1
 		}
-		icase := Case{team: index}
+		icase := Case{team: index, label: record[1]}
 
 		for i, value := range record {
-			if i == 0 {
+			if i <= 1 {
 				continue
 			}
 			icase.features = append(icase.features, mapValue(value))
