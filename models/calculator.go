@@ -65,6 +65,9 @@ func (s *SessionCalc) GetNextToCheck() (bool, int){
 	variantFalse := make([]int, lf)
 	for _, icase :=range s.cases {
 		for i, val := range icase.features {
+			if s.answers[i]>0 {
+				continue
+			}
 			if val==YES {
 				variantTrue[i]+=1
 			}
@@ -126,7 +129,10 @@ func (s *SessionCalc) isCanContinue() bool{
 	isCan := false
 	for _, icase :=range s.cases {
 		v := NA
-		for _, val := range icase.features {
+		for i, val := range icase.features {
+			if s.answers[i]>0 {
+				continue
+			}
 			if val==NA {
 				continue
 			}
@@ -134,7 +140,6 @@ func (s *SessionCalc) isCanContinue() bool{
 				v = val
 				continue
 			}
-			beego.Error(v, val)
 			if v!=val {
 				isCan = true
 			}
