@@ -74,7 +74,7 @@ func (s *SessionCalc) GetNextToCheck() (bool, int){
 		}
 	}
 	l:=int(len(s.cases)/2)
-	for i,_:=range variantTrue {
+	for i,_ := range variantTrue {
 		variant[i] = abs(l-variantTrue[i])+abs(l-variantFalse[i])
 	}
 
@@ -105,6 +105,7 @@ func (s *SessionCalc) ApplyAnswer(ans int) {
 		}
 	}
 	s.cases = newCases
+	beego.Error("new cases len: ", len(s.cases))
 	beego.Error("new cases: ", s.cases)
 }
 
@@ -113,7 +114,37 @@ func (s *SessionCalc) CheckStatus() (isFinish bool, result int){
 		s.isCompleted = true
 		return true, s.cases[0].team
 	}
-	return false, 0
+	if !s.isCanContinue(){
+		beego.Error("I can not continue")
+		s.isCompleted = true
+		return true, -1
+	}
+	return false, -1
+}
+
+func (s *SessionCalc) isCanContinue() bool{
+	isCan := false
+	for _, icase :=range s.cases {
+		v := NA
+		for _, val := range icase.features {
+			if val==NA {
+				continue
+			}
+			if v==NA {
+				v = val
+				continue
+			}
+			beego.Error(v, val)
+			if v!=val {
+				isCan = true
+			}
+
+		}
+		if isCan {
+			break
+		}
+	}
+	return isCan
 }
 
 func (s *SessionCalc) isOneTeam() bool{
@@ -139,7 +170,7 @@ func getMinIndex(arr []int, used []int)int{
 		if used[i]>0 {
 			continue
 		}
-		if ret<0 || value < min {
+		if ret<0 || value <= min {
 			min = value
 			ret = i
 			arMins = append(arMins, ret)
@@ -148,9 +179,14 @@ func getMinIndex(arr []int, used []int)int{
 	if len(arMins)<=1 {
 		return ret
 	}
+	beego.Error("arMins:", arMins)
 	rand.Seed(time.Now().Unix())
-	n := rand.Int() % len(arMins)
+	k:=rand.Int()
+	beego.Error(k)
+	n := k % len(arMins)
+	beego.Error("n:", n)
 	return arMins[n]
+	//return ret
 }
 
 func abs(a int) int {

@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"sync"
+	"github.com/astaxie/beego"
 )
 
 type Session struct {
@@ -19,11 +20,15 @@ func (s Session) GetQuestion() string {
 
 func (s Session) Answer(a int) (bool, string) {
 
+	beego.Error("session answer: ", a)
 	s.calc.ApplyAnswer(getValue(a))
 	res,i := s.calc.CheckStatus()
 
 	if res {
-		return true, teams[i]
+		if i>=0 {
+			return true, teams[i]
+		}
+		return true, ""
 	}
 
 	return false, ""
